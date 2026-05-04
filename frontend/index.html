@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>School Student Data Entry</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo.png" alt="School Logo" class="brand-logo" />
+        <div>
+          <h1>Akshat's School Student Management System</h1>
+          <p>Modern CRUD dashboard for student management</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn ghost theme-btn" id="theme-toggle">
+          <i class="fa-solid fa-moon"></i>
+          Dark Mode
+        </button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero-card card">
+        <div>
+          <h2><i class="fa-solid fa-school"></i> Welcome to Smart School Dashboard</h2>
+          <p>Manage student entries with a premium, fast, and user-friendly workflow.</p>
+        </div>
+        <button type="button" class="btn primary add-entry-btn" id="add-entry-btn">
+          <i class="fa-solid fa-user-plus"></i>
+          Add Entry
+        </button>
+      </section>
+
+      <section class="stats-grid">
+        <article class="card stat-card">
+          <h3><i class="fa-solid fa-users"></i> Total Students</h3>
+          <p id="total-students">0</p>
+        </article>
+        <article class="card stat-card">
+          <h3><i class="fa-solid fa-circle-check"></i> Paid Fees</h3>
+          <p id="paid-fees">0</p>
+        </article>
+        <article class="card stat-card">
+          <h3><i class="fa-solid fa-hourglass-half"></i> Pending Fees</h3>
+          <p id="pending-fees">0</p>
+        </article>
+        <article class="card stat-card">
+          <h3><i class="fa-solid fa-chart-column"></i> Avg Attendance</h3>
+          <p id="avg-attendance">0%</p>
+        </article>
+      </section>
+
+      <section class="card table-card">
+        <div class="card-head table-head">
+          <h2><i class="fa-solid fa-table-list"></i> Student Records</h2>
+          <div class="table-controls">
+            <input type="text" id="search-input" placeholder="Search by ID, name, parent, phone..." aria-label="Search students" title="Search students" />
+            <select id="class-filter" aria-label="Filter by Class" title="Filter by Class">
+              <option value="">All Classes</option>
+            </select>
+            <select id="section-filter" aria-label="Filter by Section" title="Filter by Section">
+              <option value="">All Sections</option>
+            </select>
+            <select id="sort-select" aria-label="Sort students" title="Sort students">
+              <option value="created_at:desc">Newest</option>
+              <option value="name:asc">Name A-Z</option>
+              <option value="name:desc">Name Z-A</option>
+              <option value="class:asc">Class Asc</option>
+              <option value="roll:asc">Roll Number Asc</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Roll</th>
+                <th>Phone</th>
+                <th>Parent</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="students-body"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="details-modal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Student Details</h3>
+          <button class="btn ghost" type="button" id="close-modal">Close</button>
+        </div>
+        <div id="modal-content" class="modal-content"></div>
+      </div>
+    </div>
+
+    <div class="entry-backdrop hidden" id="entry-modal">
+      <section class="entry-panel" role="dialog" aria-labelledby="form-title">
+        <div class="card-head">
+          <h2 id="form-title">Add New Student</h2>
+          <div class="inline-actions">
+            <span class="badge">Required fields marked *</span>
+            <button class="btn ghost" type="button" id="close-entry-modal">Close</button>
+          </div>
+        </div>
+        <form id="student-form" novalidate>
+          <input type="hidden" id="record-id" />
+
+          <div class="form-grid">
+            <label>
+              Student ID *
+              <input type="text" id="student_id" required />
+              <small class="error" data-error-for="student_id"></small>
+            </label>
+            <label>
+              Full Name *
+              <input type="text" id="full_name" required />
+              <small class="error" data-error-for="full_name"></small>
+            </label>
+            <label>
+              Class *
+              <input type="text" id="class" required />
+              <small class="error" data-error-for="class"></small>
+            </label>
+            <label>
+              Section *
+              <input type="text" id="section" required />
+              <small class="error" data-error-for="section"></small>
+            </label>
+            <label>
+              Roll Number *
+              <input type="number" id="roll_number" min="1" required />
+              <small class="error" data-error-for="roll_number"></small>
+            </label>
+            <label>
+              Date of Birth *
+              <input type="date" id="date_of_birth" required />
+              <small class="error" data-error-for="date_of_birth"></small>
+            </label>
+            <label>
+              Gender *
+              <select id="gender" aria-label="Gender" title="Gender" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <small class="error" data-error-for="gender"></small>
+            </label>
+            <label>
+              Phone Number *
+              <input type="tel" id="phone_number" required />
+              <small class="error" data-error-for="phone_number"></small>
+            </label>
+            <label class="full-span">
+              Address *
+              <textarea id="address" rows="2" required></textarea>
+              <small class="error" data-error-for="address"></small>
+            </label>
+            <label>
+              Parent Name *
+              <input type="text" id="parent_name" required />
+              <small class="error" data-error-for="parent_name"></small>
+            </label>
+            <label>
+              Email
+              <input type="email" id="email" />
+              <small class="error" data-error-for="email"></small>
+            </label>
+            <label>
+              Admission Date
+              <input type="date" id="admission_date" />
+            </label>
+            <label>
+              Fees Status
+              <select id="fees_status" aria-label="Fees Status" title="Fees Status">
+                <option value="Pending">Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Partially Paid">Partially Paid</option>
+              </select>
+            </label>
+            <label>
+              Attendance %
+              <input type="number" id="attendance_percentage" min="0" max="100" step="0.1" />
+            </label>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn primary" id="submit-btn">Submit</button>
+            <button type="button" class="btn ghost" id="reset-btn">Reset</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <div id="loader-overlay" class="loader-overlay hidden" aria-hidden="true">
+      <div class="loader-box">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Saving student data...</p>
+      </div>
+    </div>
+
+    <div id="success-popup" class="popup-backdrop hidden" aria-hidden="true">
+      <div class="popup-card" role="alertdialog" aria-labelledby="popup-title">
+        <h3 id="popup-title">Success</h3>
+        <p id="popup-message">Student data saved successfully.</p>
+        <button type="button" class="btn primary" id="popup-ok-btn">OK</button>
+      </div>
+    </div>
+
+    <div id="delete-popup" class="popup-backdrop hidden" aria-hidden="true">
+      <div class="popup-card" role="alertdialog" aria-labelledby="delete-title">
+        <h3 id="delete-title">Delete Student</h3>
+        <p>Are you sure you want to delete this student record?</p>
+        <div class="btn-row center">
+          <button type="button" class="btn ghost" id="cancel-delete-btn">Cancel</button>
+          <button type="button" class="btn delete" id="confirm-delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
