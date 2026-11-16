@@ -1,5 +1,10 @@
 -- Database: school_management
 -- Table: students
+-- Recreating this schema deletes all existing student records.
+
+BEGIN TRANSACTION;
+
+DROP TABLE IF EXISTS students;
 
 CREATE TABLE students (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,6 +25,8 @@ CREATE TABLE students (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+COMMIT;
 
 -- Sample CRUD SQL statements:
 

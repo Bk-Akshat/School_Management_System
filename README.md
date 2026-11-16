@@ -46,6 +46,9 @@ database/
 - `PUT /api/update-student/:id`
 - `DELETE /api/delete-student/:id`
 
+## Optional SQLite schema
+The `database/school_management.sql` file is separate from the MongoDB database used by the app. From the project root, run `sqlite3 school_management.db ".read database/school_management.sql"` to recreate the SQLite `students` table. This drops the existing table and all its records.
+
 ## Run Locally
 1. Open terminal in project root.
 2. Install backend dependencies:
