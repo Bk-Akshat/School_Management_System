@@ -46,6 +46,11 @@ database/
 - `PUT /api/update-student/:id`
 - `DELETE /api/delete-student/:id`
 
+## Deploy on Render
+1. In the Render Dashboard, create a Blueprint from this GitHub repository. Render uses the root `render.yaml` to configure the web service.
+2. Set `MONGODB_URI` in the service's Environment settings to your MongoDB Atlas connection string. Do not commit the connection string to this repository.
+3. Deploy or redeploy the service after setting the variable.
+
 ## Optional SQLite schema
 The `database/school_management.sql` file is separate from the MongoDB database used by the app. From the project root, run `sqlite3 school_management.db ".read database/school_management.sql"` to recreate the SQLite `students` table. This drops the existing table and all its records.
 
